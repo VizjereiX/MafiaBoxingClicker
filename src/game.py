@@ -24,14 +24,15 @@ class Game:
     def run(self):
         self.board = Board()
         while(True):
+            self.board.reset()
             if keyboard.is_pressed("q"):
                 return
             state = self.detectState()
             if (state == STATE_INGAME):
                 map = self.board.getTilesMap()
                 chain = self.strategy.findBestMove(map)
-                self.markChain(chain, map)
-                time.sleep(2)
+                self.markChain(chain, map)                
+                self.clickNextTicket()
                 self.clickDoAttack()
                 self.clickNextTicket()
             elif state == STATE_ROUND_END:
@@ -62,7 +63,7 @@ class Game:
 
     def _click(self, config_key):
         pyautogui.click(self.config.get(config_key))
-        time.sleep(2)
+        time.sleep(0.5)
 
     def markChain(self, chain, map):
         mapLocation = self.config.get("BOARD_LOCATION")
@@ -78,6 +79,7 @@ class Game:
 
     def _getBoardImg(self):
         img = ImageGrab.grab(self.config.get("BOARD_LOCATION")).convert("RGB")
+        img.save("ss.jpg")
         return cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
 
     def detectState(self):

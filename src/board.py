@@ -4,8 +4,11 @@ import numpy as np
 class Board:
     def __init__(self):
         self._tileTypes = [GameTile("glove", 1), GameTile("knuckle", 3), GameTile("hammer", 5)]
-        self._tiles = np.full((4,4), None)
+        self.reset()
         pass
+
+    def reset(self):
+        self._tiles = np.full((4,4), None)
 
     def getTilesMap(self):
         return self._tiles
