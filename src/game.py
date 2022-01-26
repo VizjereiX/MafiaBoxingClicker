@@ -79,7 +79,6 @@ class Game:
 
     def _getBoardImg(self):
         img = ImageGrab.grab(self.config.get("BOARD_LOCATION")).convert("RGB")
-        img.save("ss.jpg")
         return cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
 
     def detectState(self):

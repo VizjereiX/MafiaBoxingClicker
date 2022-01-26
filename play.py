@@ -1,4 +1,5 @@
 from src.game import Game
+from src.board import Board
 import keyboard
 
 game = Game()
