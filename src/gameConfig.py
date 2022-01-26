@@ -13,11 +13,11 @@ class GameConfig:
         }
 
     def __init__(self) -> None:
-        self._config = configparser.ConfigParser()
+        self.reset()
         try:
             self._config.read(GameConfig.CFG_FILENAME)
         except:
-            self.reset()
+            pass
 
     def get(self, key) :
         return ast.literal_eval(self._config["DEFAULT"][key])
