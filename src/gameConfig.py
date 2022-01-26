@@ -1,21 +1,34 @@
-
+import configparser
+import ast
 
 class GameConfig:
-    def __init__(self) -> None:
-        pass
+    CFG_FILENAME = "config.ini"
+    DEFAULTS = {
+            "BOARD_LOCATION": (1015, 535, 1335, 855),
+            "ATK_BTN_POS":  (1040, 900),
+            "TICKET_BTN_POS": (1170, 900),
+            "ROUND_BTN_POS": (1000, 710),
+            "NEWGAME_BTN_POS": (1300, 905),
+            "CLICK_PAUSE_PERIOD": 0.1            
+        }
 
-    def get(self, key):
-        if key == "BOARD_LOCATION":
-            return (1015, 535, 1335, 855)
-        if key == "ATK_BTN_POS":
-            return (1040, 900)
-        if key == "TICKET_BTN_POS":
-            return (1170, 900)
-        if key == "ROUND_BTN_POS":
-            return (1000, 710)
-        if key == "NEWGAME_BTN_POS":
-            return (1300, 905)
-        if key == "CLICK_PAUSE_PERIOD":
-            return 0.1
-        return None
+    def __init__(self) -> None:
+        self._config = configparser.ConfigParser()
+        try:
+            self._config.read(GameConfig.CFG_FILENAME)
+        except:
+            self.reset()
+
+    def get(self, key) :
+        return ast.literal_eval(self._config["DEFAULT"][key])
     
+    def set(self, key, value):
+        self._config["DEFAULT"][key] = str(value)
+
+    def reset(self):
+        self._config = configparser.ConfigParser()
+        self._config['DEFAULT'] = GameConfig.DEFAULTS
+
+    def save(self):
+        with open(GameConfig.CFG_FILENAME, 'w') as f:
+            self._config.write(f)
